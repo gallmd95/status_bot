@@ -1,2 +1,6 @@
+status_bot*
+*.png
+*.jpg
+.DS_Store
 statusenv
 .vscode
