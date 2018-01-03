@@ -9,7 +9,7 @@ app = Bottle()
 BOT_NAME = 'status_bot'
 BOT_ID = os.environ["BOT_ID"]
 BOT_PASS = os.environ["BOT_PASS"]
-BOT_TOKEN = "Nw/fLtHwVqX/VbValxSDmGDyVoucq92/w1kOBpinWsE="
+BOT_TOKEN = ""
 
 coms = {}
 coms
@@ -45,12 +45,13 @@ def get_vqa():
         requests.get(url + urllib.urlencode(params))
         print url + urllib.urlencode(params)
 
-@app.post('/status')
+@app.post('/api/messages')
 def get_status():
     json_data = request.json
+    print json_data
     url = json_data["serviceUrl"]
     conv_id = json_data["conversation"]["id"]
-    conv_name = json_data["conversation"]["name"]
+    #conv_name = json_data["conversation"]["name"]
     recipient_id = json_data["from"]["id"]
     recipient_name = json_data["from"]["name"]
     reply_id = json_data["id"]
@@ -62,7 +63,7 @@ def get_status():
         },
         "conversation": {
             "id": conv_id,
-            "name": conv_name
+            #"name": conv_name
         },
     "recipient": {
             "id": recipient_id,
@@ -82,11 +83,11 @@ def get_status():
     print response
 
 def main():
-    #data = "grant_type=client_credentials&client_id="+BOT_ID+"&client_secret="+BOT_PASS+"&scope=https%3A%2F%2Fapi.botframework.com%2F.default"
-    #headers = {"Host": "login.microsoftonline.com", "Content-Type": "application/x-www-form-urlencoded"}
-    #url = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
-    #response = requests.post(url,data=data, headers=headers)
-    #BOT_TOKEN = response.json()['access_token']
+    data = "grant_type=client_credentials&client_id="+BOT_ID+"&client_secret="+BOT_PASS+"&scope=https%3A%2F%2Fapi.botframework.com%2F.default"
+    headers = {"Host": "login.microsoftonline.com", "Content-Type": "application/x-www-form-urlencoded"}
+    url = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
+    response = requests.post(url,data=data, headers=headers)
+    BOT_TOKEN = response.json()['access_token']
     print BOT_TOKEN
     run(app,host='localhost', port=8081)
 
