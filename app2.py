@@ -5,8 +5,8 @@ Microsoft Teams Bot API
 import urllib
 import os
 import json
-import requests
 import threading
+import requests
 from bottle import Bottle, request, run
 
 
@@ -22,6 +22,7 @@ coms = {}
 coms
 
 def bot_auth():
+    global BOT_TOKEN
     try:
         threading.Timer(3000.0, bot_auth).start()
         data = "grant_type=client_credentials&client_id="+BOT_ID+"&client_secret="+BOT_PASS+"&scope=https%3A%2F%2Fapi.botframework.com%2F.default"
@@ -29,10 +30,11 @@ def bot_auth():
         url = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
         response = requests.post(url,data=data, headers=headers)
         BOT_TOKEN = response.json()['access_token']
-        print BOT_TOKEN
     except KeyboardInterrupt:
         print "done"
+
 bot_auth()
+print BOT_TOKEN
 
 
 def respond(replyToId="", text="hi", mentions=[], hook="redacted"):
@@ -123,7 +125,7 @@ def get_status():
     headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + BOT_TOKEN}
     print url+"v3/conversations/"+conv_id+"/activities/"+reply_id, json.dumps(payload), headers
     response = requests.post(url+"v3/conversations/"+conv_id+"/activities/"+reply_id, data=json.dumps(payload), headers=headers)  
-    print response
+    print response, response.headers
     #respond(replyToId=reply_id, text="Your regression is ready")
 
 @app.get('/api/auth')
