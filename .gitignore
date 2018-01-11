@@ -1,7 +1,11 @@
-createdManifest.zip
-status_bot*
-*.png
-*.jpg
-.DS_Store
-statusenv
+db.json 
+createdManifest.zip 
+status_bot* 
+*.png 
+*.jpg 
+.DS_Store 
+statusenv 
 .vscode
+index.html
+newindex.html
+temp.html
